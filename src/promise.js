@@ -4,6 +4,8 @@ const STATE = {
   REJECTED: "rejected",
 };
 
+const isThennable = (value) => typeof value === "object" && typeof value.then === "function";
+
 class MyPromise {
   constructor(resolver) {
     if (typeof this !== "object") {
@@ -25,7 +27,7 @@ class MyPromise {
       }
 
       // handle when resolved to another promise
-      if (value && typeof value.then === "function") {
+      if (isThennable(value)) {
         return value.then(resolve, reject);
       }
 
@@ -136,7 +138,7 @@ class MyPromise {
 
       promises.forEach((value, index) => {
         // not a promise
-        if (!value || typeof value.then !== "function") {
+        if (!isThennable(value)) {
           fulfilledCount++;
           resolvedPromises[index] = value;
         } else {
@@ -162,7 +164,7 @@ class MyPromise {
     return new MyPromise((resolve, reject) => {
       promises.forEach((value) => {
         // not a promise. resolve immediately
-        if (!value || typeof value.then !== "function") {
+        if (!isThennable(value)) {
           resolve(value);
         } else {
           // resolve or reject once the first promise settles
@@ -187,17 +189,17 @@ class MyPromise {
 
       promises.forEach((value, index) => {
         // not a promise
-        if (!value || typeof value.then !== "function") {
+        if (!isThennable(value)) {
           settledCount++;
           settledPromises[index] = { status: STATE.FULFILLED, value };
         } else {
           const handleSettled = (status, resultKey) => (result) => {
             settledCount++;
             // return value has a status fulfilled or rejected and either a value or reason with the settled value
-            resolvedPromises[index] = { status, [resultKey]: result };
+            settledPromises[index] = { status, [resultKey]: result };
 
             if (settledCount === promises.length) {
-              return resolve(resolvedPromises);
+              return resolve(settledPromises);
             }
           };
 
