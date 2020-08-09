@@ -1,10 +1,9 @@
 {
   "name": "promise-impl",
+  "private": true,
   "version": "1.0.0",
   "description": "Learning how promises work internally.",
-  "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
     "test": "jest"
   },
   "keywords": [],

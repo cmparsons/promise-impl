@@ -62,6 +62,15 @@ class MyPromise {
     }, 0);
   }
 
+  catch(onRejected) {
+    return this.then(null, onRejected);
+  }
+
+  finally(_onFinally) {
+    const onFinally = () => _onFinally();
+    return this.then(onFinally, onFinally);
+  }
+
   then(_onFulfilled, _onRejected) {
     return new MyPromise((resolve, reject) => {
       const handler = {
