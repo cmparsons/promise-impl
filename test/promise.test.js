@@ -1,5 +1,4 @@
 const MyPromise = require("../src/promise");
-const { resolve } = require("../src/promise");
 
 const resolvePromise = (value) => new MyPromise((resolve) => resolve(value));
 const rejectPromise = (value) => new MyPromise((_, reject) => reject(value));
@@ -9,7 +8,7 @@ describe(MyPromise, () => {
     expect(() => new MyPromise(null)).toThrow();
   });
 
-  it("then", () => {
+  describe("then", () => {
     it("resolves the promise", () => {
       resolvePromise(5).then((actual) => {
         expect(actual).toBe(5);
