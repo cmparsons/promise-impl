@@ -141,6 +141,10 @@ class MyPromise {
         if (!isThennable(value)) {
           fulfilledCount++;
           resolvedPromises[index] = value;
+
+          if (fulfilledCount === promises.length) {
+            return resolve(resolvedPromises);
+          }
         } else {
           value.then((result) => {
             fulfilledCount++;
@@ -192,6 +196,10 @@ class MyPromise {
         if (!isThennable(value)) {
           settledCount++;
           settledPromises[index] = { status: STATE.FULFILLED, value };
+
+          if (settledCount === promises.length) {
+            return resolve(settledPromises);
+          }
         } else {
           const handleSettled = (status, resultKey) => (result) => {
             settledCount++;

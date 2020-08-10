@@ -178,6 +178,12 @@ describe(MyPromise, () => {
         expect(e).toBe("reject 1");
       });
     });
+
+    it("resolves when given all primitive types", () => {
+      return MyPromise.all([1, 2]).then((resolvedCollection) => {
+        expect(resolvedCollection).toEqual([1, 2]);
+      });
+    });
   });
 
   describe(MyPromise.race, () => {
@@ -203,6 +209,12 @@ describe(MyPromise, () => {
           expect(actual).toBe(1);
         }
       );
+    });
+
+    it("resolves the first non-promise type", () => {
+      return MyPromise.race(["first", "second", "third"]).then((actual) => {
+        expect(actual).toBe("first");
+      });
     });
   });
 
@@ -236,6 +248,16 @@ describe(MyPromise, () => {
           { status: status.fulfilled, value: true },
           { status: status.fulfilled, value: 1 },
           { status: status.fulfilled, value: "promise" },
+        ]);
+      });
+    });
+
+    it("settles collection when all are primitive types", () => {
+      return MyPromise.allSettled([true, 1, "string"]).then((resolvedCollection) => {
+        expect(resolvedCollection).toEqual([
+          { status: status.fulfilled, value: true },
+          { status: status.fulfilled, value: 1 },
+          { status: status.fulfilled, value: "string" },
         ]);
       });
     });
