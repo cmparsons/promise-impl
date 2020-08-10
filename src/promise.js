@@ -34,9 +34,7 @@ class MyPromise {
       this.state = STATE.FULFILLED;
       this.value = value;
 
-      for (const handler of this.handlers) {
-        this.handle(handler);
-      }
+      this.handlers.forEach(this.handle, this);
       this.handlers = [];
     };
 
@@ -49,9 +47,7 @@ class MyPromise {
       this.state = STATE.REJECTED;
       this.value = error;
 
-      for (const handler of this.handlers) {
-        this.handle(handler);
-      }
+      this.handlers.forEach(this.handle, this);
       this.handlers = [];
     };
 
